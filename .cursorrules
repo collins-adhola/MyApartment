@@ -1,0 +1,5 @@
+tabs: [
+    { name: "Rent", path: "/rent" },
+    { name: "Buy", path: "/buy" },
+    { name: "Favourites", path: "/favourites" }
+] 

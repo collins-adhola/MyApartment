@@ -1,17 +1,57 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>
-      Tab 1
-    </ion-title>
+    <ion-buttons slot="start">
+      <ion-button>
+        <ion-badge color="success">{{favCount}}</ion-badge>
+        <ion-icon slot="icon-only" name="heart"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-searchbar placeholder="Search Properties, Area etc..."></ion-searchbar>
+    <ion-buttons slot="end">
+      <ion-button>
+        <ion-icon slot="icon-only" name="options"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 1</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12" *ngFor="let property of properties">
+        <ion-card class="property-card">
+          <div class="image-container">
+            <img [src]="property.image" alt="Property Image"/>
+            <div class="tags">
+              <span class="tag">Furnished</span>
+              <span class="tag">Pet Friendly</span>
+            </div>
+            <ion-icon 
+              class="favorite-icon" 
+              [name]="property.isFavorite ? 'heart' : 'heart-outline'" 
+              [color]="property.isFavorite ? 'success' : 'light'"
+              (click)="toggleFavorite(property, $event)">
+            </ion-icon>
+          </div>
+          <ion-card-content>
+            <div class="price">$ {{property.price | number}}</div>
+            <div class="property-type">{{property.type}}</div>
+            <div class="location">{{property.area}}</div>
+            <div class="features">
+              <span><ion-icon name="bed-outline"></ion-icon> {{property.bedrooms}} Bed</span>
+              <span><ion-icon name="water-outline"></ion-icon> {{property.bathrooms}} Bath</span>
+              <span><ion-icon name="car-outline"></ion-icon> {{property.parking}} Parking</span>
+            </div>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 
-  <app-explore-container name="Tab 1 page"></app-explore-container>
+  <ion-infinite-scroll (ionInfinite)="loadMore($event)">
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="Loading more properties...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 </ion-content>

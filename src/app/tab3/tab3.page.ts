@@ -1,14 +1,25 @@
 import { Component } from '@angular/core';
-import { IonHeader, IonToolbar, IonTitle, IonContent } from '@ionic/angular/standalone';
-import { ExploreContainerComponent } from '../explore-container/explore-container.component';
+import { IonicModule } from '@ionic/angular';
+import { CommonModule } from '@angular/common';
+import { FavoritesService } from '../services/favorites.service';
 
 @Component({
   selector: 'app-tab3',
   templateUrl: 'tab3.page.html',
   styleUrls: ['tab3.page.scss'],
   standalone: true,
-  imports: [IonHeader, IonToolbar, IonTitle, IonContent, ExploreContainerComponent],
+  imports: [IonicModule, CommonModule],
 })
 export class Tab3Page {
-  constructor() {}
+  favorites: any[] = [];
+
+  constructor(private favoritesService: FavoritesService) {
+    this.favoritesService.getFavoritesObservable().subscribe(favs => {
+      this.favorites = favs;
+    });
+  }
+
+  removeFavorite(propertyId: number) {
+    this.favoritesService.removeFavorite(propertyId);
+  }
 }
